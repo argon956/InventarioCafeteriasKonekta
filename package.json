@@ -14,11 +14,13 @@
     "mongoose": "^6.7.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.4",
     "react-scripts": "^5.0.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "dev": "nodemon --ext '*' src/server/index.js",
+    "dev-frontend": "vite",
+    "dev-backend": "nodemon --ext '*' src/server/index.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -54,10 +56,13 @@
     "url": "https://github.com/argon956/InventarioCafeteriasKonekta/issues"
   },
   "devDependencies": {
+    "@vitejs/plugin-react": "^2.2.0",
+    "autoprefixer": "^10.4.13",
     "cypress": "^11.2.0",
     "dotenv": "^16.0.3",
     "nodemon": "^2.0.20",
     "postcss": "^8.4.19",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "vite": "^3.2.4"
   }
 }
