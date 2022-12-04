@@ -32,30 +32,38 @@ const Form = () => {
         msg: "Todos los campos son obligatorios",
         error: true,
       });
+      setTimeout(() => {
+        setAlert({});
+      }, 3000);
       return;
     }
 
     saveProduct({ name, price, category, stock, id });
-    setAlert({
-      msg: "Guardado Correctamente",
-    });
     setName("");
     setPrice("");
     setCategory("");
     setStock("");
     setId("");
+
+    setAlert({
+      msg: "Guardado Correctamente",
+    });
+    setTimeout(() => {
+      setAlert({});
+    }, 3000);
   };
 
   const { msg } = alert;
   return (
     <>
       <h2 className="font-black text-3xl text-center">
-        Administrador de Productos
+        Administración de Productos
       </h2>
 
       <p className="text-xl mt-5 mb-10 text-center">
-        Añade tus productos y {""}
-        <span className="text-indigo-600 font-bold">Administralos</span>
+        Añade {""}
+        <span className="text-indigo-600 font-bold">Productos</span> con el
+        siguiente formulario
       </p>
 
       <form

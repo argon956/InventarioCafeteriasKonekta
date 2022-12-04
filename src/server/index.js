@@ -10,6 +10,9 @@ import api from "../routes/apiRoutes.js";
 
 dotenv.config({ path: ".env" });
 
+const port = process.env.PORT;
+const allowedDomains = [process.env.FRONTEND_URL];
+
 connectDB();
 
 const app = express();
@@ -20,14 +23,24 @@ app.use(
   })
 );
 
-app.use(cors());
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedDomains.indexOf(origin) !== -1) {
+      // El Origen del Request esta permitido
+      callback(null, true);
+    } else {
+      callback(new Error("No permitido por CORS"));
+    }
+  },
+};
+
+app.use(cors(corsOptions));
+
 app.use("/api", api);
 
 app.get("/", (req, res) => {
   return res.redirect("/admin");
 });
-
-const port = process.env.PORT;
 
 app.listen(port, () => {
   console.log(`Server running at: localhost:${port}`);

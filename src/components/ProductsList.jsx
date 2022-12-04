@@ -7,23 +7,25 @@ const ProductsList = () => {
     <>
       {products.length ? (
         <>
-          <h2 className="font-black text-3xl text-center">Listado Productos</h2>
+          <h2 className="font-black text-3xl text-center">Listado</h2>
 
           <p className="text-xl mt-5 mb-10 text-center">
-            Administra tus {""}
+            Administra los {""}
             <span className="text-indigo-600 font-bold">Productos</span>
           </p>
 
-          {products.map((product) => (
-            <Product key={product._id} product={product} />
-          ))}
+          <div className="h-screen overflow-y-auto">
+            {products.map((product) => (
+              <Product key={product._id} product={product} />
+            ))}
+          </div>
         </>
       ) : (
         <>
           <h2 className="font-black text-3xl text-center">No Hay Productos</h2>
 
           <p className="text-xl mt-5 mb-10 text-center">
-            Comienza agregando products {""}
+            Comienza agregando productos {""}
             <span className="text-indigo-600 font-bold">
               y aparecerán en este apartado
             </span>

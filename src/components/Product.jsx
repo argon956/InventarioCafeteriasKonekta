@@ -3,13 +3,14 @@ import useProducts from "../hooks/useProducts";
 const Product = ({ product }) => {
   const { setEdit, deleteProduct } = useProducts();
 
-  const { name, price, category, stock, creationDate, _id } = product;
+  const { name, price, category, stock, createdDate, _id } = product;
 
   const formatDate = (date) => {
     const newDate = new Date(date);
-    return new Intl.DateTimeFormat("es-MX", { dateStyle: "long" }).format(
-      newDate
-    );
+    return new Intl.DateTimeFormat("es-ES", {
+      dateStyle: "long",
+      timeStyle: "short",
+    }).format(newDate);
   };
 
   return (
@@ -33,7 +34,7 @@ const Product = ({ product }) => {
       <p className="font-bold uppercase text-indigo-700 my-2">
         Fecha de adición: {""}
         <span className="font-normal normal-case text-black">
-          {formatDate(creationDate)}
+          {formatDate(createdDate)}
         </span>
       </p>
 
