@@ -23,18 +23,29 @@ const Form = () => {
     }
   }, [product]);
 
+  const throwAlert = (msg, error) => {
+    setAlert({
+      msg,
+      error,
+    });
+    setTimeout(() => {
+      setAlert({});
+    }, 3000);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // validar el formulario
     if ([name, price, category, stock].includes("")) {
-      setAlert({
-        msg: "Todos los campos son obligatorios",
-        error: true,
-      });
-      setTimeout(() => {
-        setAlert({});
-      }, 3000);
+      throwAlert("Todos los campos son obligatorios", true);
+      return;
+    }
+
+    if (isNaN(price) || isNaN(stock) || stock.includes(".")) {
+      throwAlert(
+        "Alguno de los campos numéricos (precio y stock) tiene valor incorrecto",
+        true
+      );
       return;
     }
 
@@ -45,12 +56,7 @@ const Form = () => {
     setStock("");
     setId("");
 
-    setAlert({
-      msg: "Guardado Correctamente",
-    });
-    setTimeout(() => {
-      setAlert({});
-    }, 3000);
+    throwAlert("Producto Guardado Correctamente");
   };
 
   const { msg } = alert;
