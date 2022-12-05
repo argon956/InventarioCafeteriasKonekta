@@ -5,6 +5,9 @@ import {
   saveProduct,
   updateProduct,
   deleteProduct,
+  getProductMostSales,
+  getProductMostStock,
+  saveSale,
 } from "../controllers/apiController.js";
 
 const api = express.Router();
@@ -15,6 +18,7 @@ api
   .get(getProduct)
   .put(updateProduct)
   .delete(deleteProduct);
-api.route("/sales/:id").post(updateProduct);
+api.route("/sales").get(getProductMostSales).post(saveSale);
+api.route("/stats").get(getProductMostStock);
 
 export default api;

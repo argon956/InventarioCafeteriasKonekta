@@ -1,10 +1,19 @@
 import { useState } from "react";
 import useProducts from "../hooks/useProducts";
 
-const Product = ({ product, view, alert }) => {
-  const { setEdit, saveProduct, deleteProduct } = useProducts();
+const Product = ({ product, view, title, alert }) => {
+  const { setEdit, saveProduct, saveSale, deleteProduct } = useProducts();
 
-  const { name, price, reference, category, stock, createdDate, _id } = product;
+  const {
+    name,
+    price,
+    reference,
+    category,
+    stock,
+    salesCount,
+    createdDate,
+    _id,
+  } = product;
 
   const [sellAmount, setSellAmount] = useState(1);
 
@@ -24,8 +33,6 @@ const Product = ({ product, view, alert }) => {
 
     const newStock = stock - sellAmount;
 
-    console.log("newStock: " + newStock);
-
     if (newStock < 0) {
       alert("La cantidad a vender supera el stock disponible", true);
     } else {
@@ -38,12 +45,26 @@ const Product = ({ product, view, alert }) => {
         createdDate,
         id: _id,
       });
+      saveSale({
+        prod_name: name,
+        prod_reference: reference,
+        sold_amount: sellAmount,
+      });
       alert("Venta realizada correctamente");
     }
   };
 
   return (
     <div className="mx-5 my-10 bg-white shadow-md px-5 py-10 rounded-xl">
+      {title ? (
+        <>
+          <p className="font-bold uppercase text-black text-center">
+            {title} {""}
+          </p>
+        </>
+      ) : (
+        ""
+      )}
       <p className="font-bold uppercase text-indigo-700 my-2">
         Nombre: {""}
         <span className="font-normal normal-case text-black">{name}</span>
@@ -64,53 +85,70 @@ const Product = ({ product, view, alert }) => {
         Stock: {""}
         <span className="font-normal normal-case text-black">{stock}</span>
       </p>
+      {salesCount ? (
+        <>
+          <p className="font-bold uppercase text-indigo-700 my-2">
+            Ventas: {""}
+            <span className="font-normal normal-case text-black">{stock}</span>
+          </p>
+        </>
+      ) : (
+        ""
+      )}
       <p className="font-bold uppercase text-indigo-700 my-2">
         Fecha de adición: {""}
         <span className="font-normal normal-case text-black">
-          {formatDate(createdDate)}
+          {/* {formatDate(createdDate)} */}
+          {createdDate}
         </span>
       </p>
-      <div className="flex justify-between my-5">
-        {view !== "sales" ? (
-          <>
-            <button
-              type="button"
-              className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white uppercase font-bold  rounded-lg"
-              onClick={() => setEdit(product)}
-            >
-              Editar
-            </button>
-            <button
-              type="button"
-              className="py-2 px-10 bg-red-600 hover:bg-red-700 text-white uppercase font-bold  rounded-lg"
-              onClick={() => deleteProduct(_id)}
-            >
-              Eliminar
-            </button>
-          </>
-        ) : (
-          <>
-            <div>
-              <label className="font-bold uppercase text-indigo-700 my-2">
-                Cantidad a vender: {""}
-              </label>
-              <input
-                type="number"
-                className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
-                value={sellAmount}
-                onChange={(e) => setSellAmount(e.target.value)}
-              />
-            </div>
-            <button
-              type="button"
-              className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white uppercase font-bold  rounded-lg"
-              onClick={() => sellProduct()}
-            >
-              Vender
-            </button>
-          </>
-        )}
-      </div>
+      {view !== "stats" ? (
+        <>
+          <div className="flex justify-between my-5">
+            {view !== "sales" ? (
+              <>
+                <button
+                  type="button"
+                  className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white uppercase font-bold  rounded-lg"
+                  onClick={() => setEdit(product)}
+                >
+                  Editar
+                </button>
+                <button
+                  type="button"
+                  className="py-2 px-10 bg-red-600 hover:bg-red-700 text-white uppercase font-bold  rounded-lg"
+                  onClick={() => deleteProduct(_id)}
+                >
+                  Eliminar
+                </button>
+              </>
+            ) : (
+              <>
+                <div>
+                  <label className="font-bold uppercase text-indigo-700 my-2">
+                    Cantidad a vender: {""}
+                  </label>
+                  <input
+                    type="number"
+                    className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
+                    value={sellAmount}
+                    onChange={(e) => setSellAmount(e.target.value)}
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white uppercase font-bold  rounded-lg"
+                  onClick={() => sellProduct()}
+                >
+                  Vender
+                </button>
+              </>
+            )}
+          </div>
+        </>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

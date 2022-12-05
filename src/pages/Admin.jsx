@@ -25,7 +25,7 @@ const Admin = () => {
         </div>
 
         <div className="md:w-1/2 lg:w-3/5">
-          <ProductsList />
+          <ProductsList view="admin" />
         </div>
       </div>
     </>

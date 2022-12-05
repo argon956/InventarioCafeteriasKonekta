@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Alert from "./Alert";
 import useProducts from "../hooks/useProducts";
+import Product from "./Product";
 
 const Form = () => {
   const [name, setName] = useState("");
@@ -12,7 +13,15 @@ const Form = () => {
 
   const [alert, setAlert] = useState({});
 
-  const { saveProduct, product, products } = useProducts();
+  const {
+    saveProduct,
+    product,
+    products,
+    getProductWithMostStock,
+    getProductWithMostSales,
+    productMostStock,
+    productMostSales,
+  } = useProducts();
 
   useEffect(() => {
     if (product?.name) {
@@ -33,6 +42,11 @@ const Form = () => {
     setTimeout(() => {
       setAlert({});
     }, 3000);
+  };
+
+  const queryProductStats = () => {
+    getProductWithMostStock();
+    getProductWithMostSales();
   };
 
   const handleSubmit = (e) => {
@@ -167,6 +181,37 @@ const Form = () => {
         />
       </form>
       {msg && <Alert alert={alert} />}
+      <div className="px-2">
+        <button
+          type="button"
+          className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white uppercase font-bold  rounded-lg"
+          onClick={() => (products.length ? queryProductStats() : null)}
+        >
+          Mostrar el producto con mayor stock y/o el de mayores ventas
+        </button>
+        {productMostStock !== null ? (
+          <>
+            <Product
+              product={productMostStock}
+              view="stats"
+              title="Producto con mayor stock"
+            />
+          </>
+        ) : (
+          ""
+        )}
+        {productMostSales !== null ? (
+          <>
+            <Product
+              product={productMostSales}
+              view="stats"
+              title="Producto más vendido"
+            />
+          </>
+        ) : (
+          ""
+        )}
+      </div>
     </>
   );
 };

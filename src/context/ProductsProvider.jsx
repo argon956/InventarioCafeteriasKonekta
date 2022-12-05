@@ -12,6 +12,8 @@ const reqConfig = {
 export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [product, setProduct] = useState({});
+  const [productMostStock, setProductMostStock] = useState({});
+  const [productMostSales, setProductMostSales] = useState({});
 
   useEffect(() => {
     const getProducts = async () => {
@@ -66,8 +68,34 @@ export const ProductsProvider = ({ children }) => {
         const { createdAt, updatedAt, __v, ...savedProduct } = data;
         setProducts([savedProduct, ...products]);
       } catch (error) {
-        console.log(error.response.data.msg);
+        console.log(error);
       }
+    }
+  };
+
+  const saveSale = async (sale) => {
+    try {
+      await axiosClient.post("/sales", sale, reqConfig);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getProductWithMostStock = async () => {
+    try {
+      const { data } = await axiosClient.get("/stats", reqConfig);
+      setProductMostStock(data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getProductWithMostSales = async () => {
+    try {
+      const { data } = await axiosClient.get("/sales", reqConfig);
+      setProductMostSales(data[0]);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -89,6 +117,11 @@ export const ProductsProvider = ({ children }) => {
       value={{
         products,
         saveProduct,
+        saveSale,
+        getProductWithMostStock,
+        productMostStock,
+        getProductWithMostSales,
+        productMostSales,
         setEdit,
         product,
         deleteProduct,
