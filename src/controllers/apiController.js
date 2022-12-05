@@ -1,4 +1,4 @@
-import Product from "../models/Product.cjs";
+import Product from "../models/Product.js";
 
 const saveProduct = async (req, res) => {
   const product = new Product(req.body);

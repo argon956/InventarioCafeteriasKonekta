@@ -4,6 +4,7 @@ import useProducts from "../hooks/useProducts";
 
 const Form = () => {
   const [name, setName] = useState("");
+  const [reference, setReference] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState("");
@@ -11,11 +12,12 @@ const Form = () => {
 
   const [alert, setAlert] = useState({});
 
-  const { saveProduct, product } = useProducts();
+  const { saveProduct, product, products } = useProducts();
 
   useEffect(() => {
     if (product?.name) {
       setName(product.name);
+      setReference(product.reference);
       setPrice(product.price);
       setCategory(product.category);
       setStock(product.stock);
@@ -36,12 +38,17 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if ([name, price, category, stock].includes("")) {
+    if ([name, reference, price, category, stock].includes("")) {
       throwAlert("Todos los campos son obligatorios", true);
       return;
     }
 
-    if (isNaN(price) || isNaN(stock) || stock.includes(".") || stock < 0) {
+    if (
+      isNaN(price) ||
+      isNaN(stock) ||
+      stock.toString().includes(".") ||
+      stock < 0
+    ) {
       throwAlert(
         "Alguno de los campos numéricos (precio y stock) tiene valor incorrecto",
         true
@@ -49,8 +56,9 @@ const Form = () => {
       return;
     }
 
-    saveProduct({ name, price, category, stock, id });
+    saveProduct({ name, reference, price, category, stock, id });
     setName("");
+    setReference("");
     setPrice("");
     setCategory("");
     setStock("");
@@ -87,6 +95,23 @@ const Form = () => {
             className="border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md"
             value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-5">
+          <label htmlFor="name" className="text-gray-700 uppercase font-bold">
+            Referencia
+          </label>
+          <input
+            id="reference"
+            type="text"
+            placeholder="Nombre del producto"
+            className={`border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md ${
+              id ? "bg-gray-200" : ""
+            }`}
+            value={reference}
+            onChange={(e) => setReference(e.target.value)}
+            disabled={id ? true : false}
           />
         </div>
 
@@ -141,7 +166,6 @@ const Form = () => {
           value={id ? "Guardar Cambios" : "Agregar Producto"}
         />
       </form>
-
       {msg && <Alert alert={alert} />}
     </>
   );

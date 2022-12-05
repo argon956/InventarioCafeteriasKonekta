@@ -1,7 +1,6 @@
 /// <reference types="mongoose" />
 
-const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
+import mongoose from "mongoose";
 
 const productsSchema = mongoose.Schema(
   {
@@ -10,7 +9,8 @@ const productsSchema = mongoose.Schema(
       required: true,
     },
     reference: {
-      type: Number,
+      type: String,
+      required: true,
     },
     price: {
       type: Number,
@@ -35,8 +35,6 @@ const productsSchema = mongoose.Schema(
   }
 );
 
-productsSchema.plugin(AutoIncrement, {
-  inc_field: "reference",
-});
+const Product = mongoose.model("Product", productsSchema);
 
-module.exports = mongoose.model("Product", productsSchema);
+export default Product;
