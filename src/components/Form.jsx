@@ -41,7 +41,7 @@ const Form = () => {
       return;
     }
 
-    if (isNaN(price) || isNaN(stock) || stock.includes(".")) {
+    if (isNaN(price) || isNaN(stock) || stock.includes(".") || stock < 0) {
       throwAlert(
         "Alguno de los campos numéricos (precio y stock) tiene valor incorrecto",
         true
