@@ -4,7 +4,7 @@ import useProducts from "../hooks/useProducts";
 const Product = ({ product, view, alert }) => {
   const { setEdit, saveProduct, deleteProduct } = useProducts();
 
-  const { name, price, category, stock, createdDate, _id } = product;
+  const { name, price, reference, category, stock, createdDate, _id } = product;
 
   const [sellAmount, setSellAmount] = useState(1);
 
@@ -31,6 +31,7 @@ const Product = ({ product, view, alert }) => {
     } else {
       saveProduct({
         name,
+        reference,
         price,
         category,
         stock: newStock,
@@ -46,6 +47,10 @@ const Product = ({ product, view, alert }) => {
       <p className="font-bold uppercase text-indigo-700 my-2">
         Nombre: {""}
         <span className="font-normal normal-case text-black">{name}</span>
+      </p>
+      <p className="font-bold uppercase text-indigo-700 my-2">
+        Referencia: {""}
+        <span className="font-normal normal-case text-black">{reference}</span>
       </p>
       <p className="font-bold uppercase text-indigo-700 my-2">
         Precio: {""}

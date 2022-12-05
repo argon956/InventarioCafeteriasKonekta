@@ -15,8 +15,7 @@ export const ProductsProvider = ({ children }) => {
 
   useEffect(() => {
     const getProducts = async () => {
-      // const { data } = await axiosClient("/products", reqConfig);
-      const { data } = await axiosClient.get("/products");
+      const { data } = await axiosClient("/products", reqConfig);
       setProducts(data);
     };
     getProducts();
@@ -35,6 +34,7 @@ export const ProductsProvider = ({ children }) => {
           );
           const { createdAt, updatedAt, __v, ...savedProduct } = data;
           savedProduct.createdDate = product.createdDate;
+          savedProduct.reference = product.reference;
 
           const updatedProducts = products.map((productState) =>
             productState._id === product.id ? savedProduct : productState
