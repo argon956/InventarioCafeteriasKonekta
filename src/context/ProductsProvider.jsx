@@ -25,16 +25,33 @@ export const ProductsProvider = ({ children }) => {
   const saveProduct = async (product) => {
     if (product.id) {
       try {
-        const { data } = await axiosClient.put(
-          `/products/${product.id}`,
-          product,
-          reqConfig
-        );
+        if (product.stock === 0) {
+          await axiosClient.delete(`/products/${product.id}`, reqConfig);
 
-        const updatedProducts = products.map((productState) =>
-          productState._id === data._id ? data : productState
-        );
-        setProducts(updatedProducts);
+          const { data } = await axiosClient.post(
+            "/products",
+            product,
+            reqConfig
+          );
+          const { createdAt, updatedAt, __v, ...savedProduct } = data;
+          savedProduct.createdDate = product.createdDate;
+
+          const updatedProducts = products.map((productState) =>
+            productState._id === product.id ? savedProduct : productState
+          );
+          setProducts(updatedProducts);
+        } else {
+          const { data } = await axiosClient.put(
+            `/products/${product.id}`,
+            product,
+            reqConfig
+          );
+
+          const updatedProducts = products.map((productState) =>
+            productState._id === data._id ? data : productState
+          );
+          setProducts(updatedProducts);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -46,8 +63,8 @@ export const ProductsProvider = ({ children }) => {
           reqConfig
         );
 
-        const { createdAt, updatedAt, __v, ...productAlmacenado } = data;
-        setProducts([productAlmacenado, ...products]);
+        const { createdAt, updatedAt, __v, ...savedProduct } = data;
+        setProducts([savedProduct, ...products]);
       } catch (error) {
         console.log(error.response.data.msg);
       }

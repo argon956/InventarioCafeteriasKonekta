@@ -42,7 +42,6 @@ const updateProduct = async (req, res) => {
     return res.json({ msg: "Accion no válida" });
   }
 
-  // Actualizar Product
   product.name = req.body.name || product.name;
   product.price = req.body.price || product.price;
   product.category = req.body.category || product.category;
